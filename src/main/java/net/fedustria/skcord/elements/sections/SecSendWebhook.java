@@ -21,7 +21,7 @@ import org.skriptlang.skript.lang.entry.util.ExpressionEntryData;
 import java.util.List;
 
 @Name( "Webhook - Build Message" )
-@Description( { "Build a message to send as a webhook.", "\n`webhook` = The URL of the Discord webhook (required).", "\n`message` = The text content of the message.", "\n`avatar` = The URL of the avatar to use for the webhook.", "\n`embed` = An embed object to include in the message.", "\n`username` = The username to use for the webhook.", "\n`thread_id` = The ID of the thread to send the message to.", "\n`thread_name` = The name of a new thread to create and send the message to.", "\n`saveMessageIdInto` = Variable to save the message ID into for later editing/deletion.", "\nNote: You must provide either a message or an embed. You cannot specify both thread_id and thread_name." } )
+@Description( { "Build a message to send as a webhook.", "\n`webhook` = The URL of the Discord webhook (required).", "\n`message` = The text content of the message.", "\n`avatar` = The URL of the avatar to use for the webhook.", "\n`embed` = An embed object to include in the message.", "\n`username` = The username to use for the webhook.", "\n`thread_id` = The ID of the thread to send the message to.", "\n`thread_name` = The name of a new thread to create and send the message to.", "\n`saveMessageIdInto` = Variable to save the message ID into for later editing/deletion (optional).", "\nNote: You must provide either a message or an embed. You cannot specify both thread_id and thread_name." } )
 @Examples( { "on load:", "\tcreate a new webhook message:", "\t\twebhook: \"https://discord.com/api/webhooks/your_webhook_url_here\"", "\t\tmessage: \"Hello, Discord!\"", "\t\tusername: \"My Skript Bot\"", "\t\tavatar: \"https://example.com/avatar.png\"", "\t\tsaveMessageIdInto: {_messageId}", "", "on player join:", "\tcreate a new webhook message:", "\t\twebhook: \"https://discord.com/api/webhooks/your_webhook_url_here\"", "\t\tembed: {_embed}", "\t\tthread_name: \"New Player Joined\"", "\t\tsaveMessageIdInto: {_joinMessageId}", "", "command /announce <text>:", "\ttrigger:", "\t\tcreate a new webhook message:", "\t\t\twebhook: \"https://discord.com/api/webhooks/your_webhook_url_here\"", "\t\t\tmessage: \"Announcement: %arg-1%\"", "\t\t\tthread_id: \"123456789\"", "\t\t\tsaveMessageIdInto: {_announcementId}" } )
 @Since( "3.0-RELEASE" )
 public class SecSendWebhook extends Section {
@@ -66,11 +66,13 @@ public class SecSendWebhook extends Section {
 		this.username = (Expression<String>) container.getOptional("username", false);
 		this.threadId = (Expression<String>) container.getOptional("thread_id", false);
 		this.threadName = (Expression<String>) container.getOptional("thread_name", false);
+
 		if (container.getOptional("saveMessageIdInto", false) instanceof Variable<?>) {
 			this.saveMessageIdInto = (Variable<?>) container.getOptional("saveMessageIdInto", false);
 		} else {
 			this.saveMessageIdInto = null;
 		}
+
 		if (this.webhook == null) {
 			Skript.error("You need to provide a webhook to send the message to.");
 			return false;
@@ -96,12 +98,6 @@ public class SecSendWebhook extends Section {
 	}
 
 	private void trigger(Event e) {
-		Variable<?> var = this.saveMessageIdInto;
-		if (var == null) {
-			return;
-		}
-
-
 		String webhook = this.webhook.getSingle(e);
 		String message = this.message != null ? this.message.getSingle(e) : null;
 		String avatar = this.avatar != null ? this.avatar.getSingle(e) : null;
@@ -116,38 +112,34 @@ public class SecSendWebhook extends Section {
 		}
 
 		DiscordWebhook discordWebHook = new DiscordWebhook();
-
 		if (message != null) {
 			message = message.replaceAll("<@§(\\d+)>", "<@&$1>");
 			discordWebHook.content(message);
 		}
-
 		if (username != null) {
 			discordWebHook.username(username);
 		}
-
 		if (avatar != null) {
 			discordWebHook.avatarUrl(avatar);
 		}
-
 		if (threadName != null) {
 			discordWebHook.threadName(threadName);
 		}
-
 		if (embed != null) {
 			discordWebHook.setEmbeds(List.of(embed));
 		}
 
-		String messageId;
-
 		try {
+			String messageId;
 			if (threadId != null) {
 				messageId = discordWebHook.sendToDiscord(webhook, Long.parseLong(threadId));
 			} else {
 				messageId = discordWebHook.sendToDiscord(webhook);
 			}
 
-			var.change(e, new Object[]{ messageId }, Changer.ChangeMode.SET);
+			if (this.saveMessageIdInto != null && messageId != null) {
+				this.saveMessageIdInto.change(e, new Object[]{ messageId }, Changer.ChangeMode.SET);
+			}
 		} catch (Throwable t) {
 			Skript.error("Failed to send webhook message: " + t.getMessage());
 		}

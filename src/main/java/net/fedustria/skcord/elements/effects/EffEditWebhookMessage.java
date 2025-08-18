@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 @Name( "Webhook - Edit message content" )
 @Description( "Edit the content of a webhook message quickly." )
-@Examples( { "on load:", "    set {announcement::webhook} to \"your_webhook_url\"", "", "command /announce <text>:", "    executable by: player, console", "    trigger:", "        # Send announcement and capture message ID", "        create a new webhook message:", "            webhook: {announcement::webhook}", "            message: \"📢 Announcement: %arg-1%\"", "            username: \"Server Bot\"", "            saveMessageIdInto: {_announcementId}", "", "        # Store the message ID for later editing", "        set {announcements::%player%} to {_announcementId}", "        send \"Announcement sent! Message ID: %{_announcementId}%\"", "", "command /editannouncement <text>:", "    executable by: player, console", "    trigger:", "        if {announcements::%player%} is set:", "            edit webhook message:", "                webhook: {announcement::webhook}", "                message_id: {announcements::%player%}", "                message: \"📝 Updated: %arg-1%\"", "            send \"Announcement updated!\"", "        else:", "            send \"You don't have any announcements to edit!\"" } )
+@Examples( { "edit webhook message with id \"1234567890\" from \"https://discord.com/api/webhooks/1234567890/ABCDEFGHIJKLMN\" to \"New content\"", "edit webhook message with id \"1234567890\" from \"https://discord.com/api/webhooks/1234567890/ABCDEFGHIJKLMN\" to \"New content\" in thread \"9876543210\"" } )
 @Since( "3.3-RELEASE" )
 public class EffEditWebhookMessage extends Effect {
 
