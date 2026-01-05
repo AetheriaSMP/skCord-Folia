@@ -18,10 +18,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
-    implementation 'org.jetbrains:annotations:24.0.0'
     implementation "com.jeff_media:SpigotUpdateChecker:3.0.4"
 
+    compileOnly 'org.jetbrains:annotations:24.0.0'
+    compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
     compileOnly 'com.github.SkriptLang:Skript:2.13.2'
     compileOnly 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     compileOnly 'org.projectlombok:lombok:1.18.34'

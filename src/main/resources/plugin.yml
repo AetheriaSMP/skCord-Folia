@@ -11,6 +11,7 @@ description: Send discord webhooks with Skript!
 
 libraries:
   - com.fasterxml.jackson.core:jackson-databind:2.15.2
+  - org.jetbrains:annotations:24.0.0
 
 commands:
   skcord:
