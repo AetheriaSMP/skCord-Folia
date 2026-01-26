@@ -1,13 +1,12 @@
 name: SkCord
-version: '3.4-RELEASE'
-
+version: '3.5-RELEASE'
 api-version: 1.13
-
 main: ovh.fedox.skcord.SkCord
 depend:
   - Skript
 authors: [ Fedox ]
 description: Send discord webhooks with Skript!
+website: https://fedox.ovh/
 
 libraries:
   - com.fasterxml.jackson.core:jackson-databind:2.15.2

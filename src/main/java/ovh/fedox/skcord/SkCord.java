@@ -19,7 +19,7 @@ public final class SkCord extends JavaPlugin {
     private final Logger customLogger = new Logger();
     @Getter
     private SkriptAddon addon;
- 
+
     @Override
     public void onEnable() {
         plugin = this;
@@ -35,7 +35,7 @@ public final class SkCord extends JavaPlugin {
         new UpdateChecker(this, UpdateCheckSource.SPIGOT, "106832")
                 .checkEveryXHours(24)
                 .setNotifyOpsOnJoin(true)
-                .setDownloadLink("https://github.com/Fedox-die-Ente/skCord-v3/releases")
+                .setDownloadLink("https://github.com/feeeedox/skCord-v3/releases")
                 .setDonationLink("https://www.paypal.com/paypalme/feeedox")
                 .setUserAgent(new UserAgentBuilder().addPluginNameAndVersion())
                 .checkNow();
