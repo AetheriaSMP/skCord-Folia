@@ -160,7 +160,7 @@ public class SecSendWebhook extends Section {
             discordWebHook.sendToDiscordAsync(webhook, threadIdLong,
                     messageId -> {
                         if (this.saveMessageIdInto != null && messageId != null) {
-                            org.bukkit.Bukkit.getScheduler().runTask(
+                            org.bukkit.Bukkit.getGlobalRegionScheduler().execute(
                                     SkCord.getPlugin(),
                                     () -> this.saveMessageIdInto.change(e, new Object[]{messageId}, Changer.ChangeMode.SET)
                             );

@@ -63,7 +63,7 @@ public class DiscordWebhook {
      * @param onError    Callback for errors (optional)
      */
     public static void deleteMessageAsync(String webhookUrl, String messageId, Long threadId, Consumer<Throwable> onError) {
-        Bukkit.getScheduler().runTaskAsynchronously(SkCord.getPlugin(), () -> {
+        Bukkit.getAsyncScheduler().runNow(SkCord.getPlugin(), scheduledTask -> {
             try {
                 deleteMessage(webhookUrl, messageId, threadId);
             } catch (Throwable t) {
@@ -140,7 +140,7 @@ public class DiscordWebhook {
      * @param onError    Callback for errors (optional)
      */
     public static void editMessageAsync(String webhookUrl, String messageId, String content, List<Embed> embeds, String avatarUrl, Long threadId, Consumer<Throwable> onError) {
-        Bukkit.getScheduler().runTaskAsynchronously(SkCord.getPlugin(), () -> {
+        Bukkit.getAsyncScheduler().runNow(SkCord.getPlugin(), scheduledTask -> {
             try {
                 editMessage(webhookUrl, messageId, content, embeds, avatarUrl, threadId);
             } catch (Throwable t) {
@@ -250,7 +250,7 @@ public class DiscordWebhook {
      * @param onError    Callback for errors (optional)
      */
     public void sendToDiscordAsync(String webhookUrl, Long threadId, Consumer<String> onSuccess, Consumer<Throwable> onError) {
-        Bukkit.getScheduler().runTaskAsynchronously(SkCord.getPlugin(), () -> {
+        Bukkit.getAsyncScheduler().runNow(SkCord.getPlugin(), scheduledTask -> {
             try {
                 String messageId = sendToDiscord(webhookUrl, threadId);
                 if (onSuccess != null) {

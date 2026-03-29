@@ -1,6 +1,7 @@
 name: SkCord
 version: '3.5-RELEASE'
-api-version: 1.13
+api-version: '1.21'
+folia-supported: true
 main: ovh.fedox.skcord.SkCord
 depend:
   - Skript
